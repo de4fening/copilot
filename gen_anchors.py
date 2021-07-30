@@ -44,12 +44,12 @@ def print_anchors(centroids):
     r = "anchors: ["
     for i in sorted_indices:
         out_string += str(int(anchors[i,0]*416)) + ',' + str(int(anchors[i,1]*416)) + ', '
-            
+
     print(out_string[:-2])
 
 def run_kmeans(ann_dims, anchor_num):
     ann_num = ann_dims.shape[0]
-    iterations = 0
+    #iterations = 0
     prev_assignments = np.ones(ann_num)*(-1)
     iteration = 0
     old_distances = np.zeros((ann_num, anchor_num))
@@ -69,20 +69,21 @@ def run_kmeans(ann_dims, anchor_num):
         print("iteration {}: dists = {}".format(iteration, np.sum(np.abs(old_distances-distances))))
 
         #assign samples to centroids
-        assignments = np.argmin(distances,axis=1)
+        assignments = np.argmin(distances, axis=1)
 
-        if (assignments == prev_assignments).all() :
+        if (assignments == prev_assignments).all():
             return centroids
 
         #calculate new centroids
-        centroid_sums=np.zeros((anchor_num, anchor_dim), np.float)
+        centroid_sums = np.zeros((anchor_num, anchor_dim), np.float)
         for i in range(ann_num):
-            centroid_sums[assignments[i]]+=ann_dims[i]
+            centroid_sums[assignments[i]] += ann_dims[i]
         for j in range(anchor_num):
-            centroids[j] = centroid_sums[j]/(np.sum(assignments==j) + 1e-6)
+            centroids[j] = centroid_sums[j] / (np.sum(assignments == j) + 1e-6)
 
         prev_assignments = assignments.copy()
         old_distances = distances.copy()
+
 
 def _main_(argv):
     config_path = args.conf
@@ -114,6 +115,7 @@ def _main_(argv):
     print('\naverage IOU for', num_anchors, 'anchors:', '%0.2f' % avg_IOU(annotation_dims, centroids))
     print_anchors(centroids)
 
+
 if __name__ == '__main__':
     argparser = argparse.ArgumentParser()
 
@@ -122,6 +124,7 @@ if __name__ == '__main__':
         '--conf',
         default='config.json',
         help='path to configuration file')
+
     argparser.add_argument(
         '-a',
         '--anchors',

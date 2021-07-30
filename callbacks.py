@@ -1,3 +1,5 @@
+from builtins import print
+import warnings
 from keras.callbacks import TensorBoard, ModelCheckpoint
 import tensorflow as tf
 import numpy as np

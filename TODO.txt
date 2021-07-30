@@ -1,0 +1,4 @@
+TODO: code refactoring(PEP8).
+TODO: directory structure with "cookiecutter data science".(https://drivendata.github.io/cookiecutter-data-science/)
+TODO: import tensorflow with all required dependencies.
+TODO: GUI for this app.
